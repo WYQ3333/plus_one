@@ -14,38 +14,72 @@
 #include<Windows.h>
 #include<stdlib.h>
 
+//int* plusOne(int* digits, int digitsSize, int* returnSize) {
+//	int i = digitsSize - 1;
+//	for (; i >= 0; i--)
+//	{
+//		if (i>=0&&digits[i] < 9)
+//		{
+//			digits[i]++;
+//			break;
+//		}
+//		else
+//		{
+//			digits[i] = 0;
+//			continue;
+//		}
+//	}
+//	for (int j = 0; j < digitsSize; j++)
+//	{
+//		returnSize[j] = digits[j];
+//	}
+//	return returnSize;
+//}
+
 int* plusOne(int* digits, int digitsSize, int* returnSize) {
-	int i = digitsSize - 1;
-	for (; i >= 0; i--)
+	int i = 0;
+	digits[digitsSize-1]++;
+	int *newreturn = malloc(sizeof(int)*(digitsSize + 1));
+	(*returnSize) = digitsSize;
+	for (i = digitsSize - 1; i > 0; i--)
 	{
-		if (i>=0&&digits[i] < 9)
+		if (digits[i] >= 10)
 		{
-			digits[i]++;
-			break;
-		}
-		else
-		{
-			digits[i] = 0;
-			continue;
+			digits[i] = digits[i] % 10;
+			digits[i - 1] ++;
 		}
 	}
-	for (int j = 0; j < digitsSize; j++)
+	if (digits[0] >= 10)
 	{
-		returnSize[j] = digits[j];
+		newreturn[0] = 1;
+		digits[0] = digits[0] % 10;
+		(*returnSize) = digitsSize + 1;
+		for (i = 0; i < digitsSize; i++)
+		{
+			newreturn[i + 1] = digits[i];
+		}
 	}
-	return returnSize;
+	else
+	{
+		for (i = 0; i < digitsSize; i++)
+		{
+			newreturn[i] = digits[i];
+		}
+	}
+	return newreturn;
 }
 
 int main(){
-	int difits[] = { 4, 3, 2, 9 };
+	int difits[] = { 9,9,9 };
 	int digitsSize = sizeof(difits) / sizeof(difits[0]);
-	int *returnSize = malloc(sizeof(int)*digitsSize);;
+	int input = 0;
+	int *returnSize = &input;
 	int *ret = plusOne(difits, digitsSize, returnSize);
-	for (int i = 0; i < digitsSize; i++)
+	for (int i = 0; i < (*returnSize); i++)
 	{
 		printf("%d ", ret[i]);
 	}
-	free(returnSize);
+	free(ret);
 	system("pause");
 	return 0;
 }
